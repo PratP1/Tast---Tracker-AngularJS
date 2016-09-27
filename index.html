@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body ng-controller="dataCtrl">
+    <div id="head">
+        <h1>Task Tracker<small>v2.0</small></h1>
+    </div>
+
+    <div class="box">
+        <h3> Create a Task</h3>
+        <form ng-submit="sub()">
+            Task Name
+            <br>
+            <input type="text" name="message" id="tname" ng-model="name">
+            <br>
+            <br>Date
+            <br>
+            <input type="date" name="message" id="date" ng-model="date">
+            <br>
+            <br> Assigned To
+            <br>
+            <input type="text" name="message" id="assigned" ng-model="assigned">
+            <br>
+            <br>
+
+            <input type="submit">
+        </form>
+    </div>
+
+
+    <div class="output">
+        <h2>Existing Tasks</h2>
+        <table id="table_data">
+            <tr ng-repeat="todo in task ">
+                <td>{{todo.name}}</td>
+                <td>{{todo.date}}</td>
+                <td>{{todo.assigned}}</td>
+            </tr>
+        </table>
+
+    </div>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('dataCtrl', function ($scope, $http) {
+            $http.get('data.json').success(function (response) {
+                $scope.task = response;
+            });
+            $scope.sub = function () {
+                $scope.task.push({
+                    name: $scope.name,
+                    date: $scope.date,
+                    assigned: $scope.assigned,
+                    done: false
+                });
+
+            }
+
+        });
+    </script>
+
+
+</body>
+
+</html>
